@@ -1,6 +1,6 @@
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = "https://jzgggmbyymyrkclpxpes.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6Z2dnbWJ5eW15cmtjbHB4cGVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMDAyMTUsImV4cCI6MjA2NDg3NjIxNX0.O66G0CNCSUajrXWxq8djO4vj73FFy9IROzX0pKkdT4k";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- Slider logic for double sign in/up form ---
 const signUpButton = document.getElementById('signUp');
@@ -17,10 +17,7 @@ if (signUpButton && signInButton && container) {
     });
 }
 
-// --- Your authentication logic can go below ---
-console.log("auth.js loaded");
-
-// Sign Up
+// --- Sign Up ---
 document.getElementById('signup-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('signup-email').value;
@@ -40,7 +37,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
   }
 });
 
-// Sign In
+// --- Sign In ---
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('login-email').value;

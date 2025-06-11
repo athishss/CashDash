@@ -4,21 +4,146 @@
     <meta charset="UTF-8">
     <title>CashDash - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <p>Welcome to your CashDash dashboard!</p>
-    <div id="summary">
-        <!-- Placeholder for budget summary -->
-        <p>Total Balance: $0.00</p>
-        <p>Total Expenses: $0.00</p>
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-coins"></i> CashDash</div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#">Expenses</a></li>
+            <li><a href="#">Insights</a></li>
+            <li><a href="#">Goals</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="import-csv-btn" class="custom-animated-btn"><i class="fa-solid fa-file-csv"></i> Import CSV</button>
+            <button id="add-expense-btn" class="custom-animated-btn"><i class="fa-solid fa-plus"></i> Add Expense</button>
+            <span class="nav-icons">
+                <i class="fa-regular fa-bell"></i>
+                <i class="fa-solid fa-gear"></i>
+                <span class="user-avatar">U</span>
+            </span>
+        </div>
+    </nav>
+    <main class="dashboard-main">
+        <h2>Expense Dashboard</h2>
+        <p>Welcome back! Here's your financial summary</p>
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                <div>
+                    <div class="card-title">Monthly Spending</div>
+                    <div class="card-value" id="monthly-spending">$0.00</div>
+                    <div class="card-desc"><span class="green" id="spending-change">0% decrease</span> from last month</div>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <div>
+                    <div class="card-title">Budget Status</div>
+                    <div class="card-value" id="budget-status">$0.00 left</div>
+                    <div class="card-desc">
+                        <div class="progress-bar">
+                            <div class="progress" style="width:0%"></div>
+                        </div>
+                        <span id="budget-progress-label">0% of $1500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card highlight">
+                <div class="card-icon"><i class="fa-solid fa-fire"></i></div>
+                <div>
+                    <div class="card-title">Tracking Streak</div>
+                    <div class="card-value" id="tracking-streak">0 days</div>
+                    <div class="card-desc">Current goal: 30 days</div>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-icon"><i class="fa-solid fa-tags"></i></div>
+                <div>
+                    <div class="card-title">Top Category</div>
+                    <div class="card-value" id="top-category">N/A</div>
+                    <div class="card-desc" id="top-category-desc">0% of total spending</div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-charts">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span>Spending by Category</span>
+                    <div class="chart-tabs">
+                        <button class="tab active">Month</button>
+                        <button class="tab">Week</button>
+                        <button class="tab">Year</button>
+                    </div>
+                </div>
+                <canvas id="categoryChart" height="220"></canvas>
+                <div class="chart-legend">
+                    <span class="legend-item food">Food & Dining</span>
+                    <span class="legend-item groceries">Groceries</span>
+                    <span class="legend-item shopping">Shopping</span>
+                    <span class="legend-item utilities">Utilities</span>
+                    <span class="legend-item entertainment">Entertainment</span>
+                    <span class="legend-item transport">Transport</span>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span>Monthly Spending Trend</span>
+                    <span class="forecast-link">Forecast <i class="fa-solid fa-arrow-trend-up"></i></span>
+                </div>
+                <canvas id="trendChart" height="220"></canvas>
+            </div>
+        </div>
+        <div style="margin-top:2rem;">
+            <h3>Recent Expenses</h3>
+            <table class="expenses-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Note</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expenses-list">
+                    <!-- Expenses will be rendered here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <button id="logout-btn" class="custom-animated-btn" style="margin:2rem auto;display:block;">Logout</button>
+
+    <!-- Add Expense Modal -->
+    <div id="expense-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <span class="close" id="close-expense-modal">&times;</span>
+        <h2>Add Expense</h2>
+        <form id="expense-form">
+          <label>Amount</label>
+          <input type="number" id="expense-amount" required min="0.01" step="0.01" />
+          <label>Category</label>
+          <select id="expense-category" required>
+            <option value="">Select</option>
+            <option>Food & Dining</option>
+            <option>Groceries</option>
+            <option>Shopping</option>
+            <option>Utilities</option>
+            <option>Entertainment</option>
+            <option>Transport</option>
+            <option>Other</option>
+          </select>
+          <label>Date</label>
+          <input type="date" id="expense-date" required />
+          <label>Note</label>
+          <input type="text" id="expense-note" maxlength="50" />
+          <button type="submit" class="custom-animated-btn" style="margin-top:1rem;">Add</button>
+        </form>
+      </div>
     </div>
-    <div id="charts">
-        <!-- Placeholder for charts -->
-        <canvas id="expensesChart" width="400" height="200"></canvas>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/dashboard.js"></script>
-    <!-- Chart.js library (optional, for future use) -->
-    <!-- <script src="js/lib/chart.min.js"></script> -->
 </body>
 </html>
